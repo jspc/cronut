@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/moby/moby/client"
 	"github.com/zeebox/go-http-middleware"
 	"github.com/zeebox/goose4"
 )
@@ -16,6 +17,8 @@ import (
 var (
 	GitRepo = flag.String("repo", "", "Git repo which stores job configuration")
 	L       = log.New(os.Stdout, "", log.LstdFlags|log.Lshortfile)
+
+	Docker *client.Client
 )
 
 func main() {
@@ -36,6 +39,11 @@ func main() {
 	}
 
 	se4, err := goose4.NewGoose4(c)
+	if err != nil {
+		panic(err)
+	}
+
+	Docker, err = client.NewEnvClient()
 	if err != nil {
 		panic(err)
 	}

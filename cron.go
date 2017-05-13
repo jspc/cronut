@@ -25,6 +25,7 @@ func Cron(p string) {
 		for _ = range ticker.C {
 			if nextTime.Sub(time.Now()) <= 0 {
 				L.Printf("running: %v", j)
+				Start(j)
 				break
 			}
 		}
