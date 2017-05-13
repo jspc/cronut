@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gorhill/cronexpr"
+	"github.com/satori/go.uuid"
 )
 
 func Cron(p string) {
@@ -24,8 +25,10 @@ func Cron(p string) {
 
 		for _ = range ticker.C {
 			if nextTime.Sub(time.Now()) <= 0 {
-				L.Printf("running: %v", j)
-				Start(j)
+				jid := uuid.NewV4().String()
+
+				L.Printf("%s -> running: %v", jid, j)
+				Start(jid, j)
 				break
 			}
 		}

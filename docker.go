@@ -11,9 +11,11 @@ import (
 	"github.com/docker/docker/api/types/strslice"
 )
 
-func Start(j Job) {
+func Start(jid string, j Job) {
 	cmd := strslice.StrSlice(j.Args)
 	name := fmt.Sprintf("%s-%d", j.Name, time.Now().Unix())
+
+	L.Printf("%s -> Starting %s", jid, name)
 
 	cb, err := Docker.ContainerCreate(
 		context.Background(),
@@ -38,5 +40,5 @@ func Start(j Job) {
 		types.ContainerStartOptions{},
 	)
 
-	L.Print(err)
+	L.Printf("%s -> error: %v", jid, err)
 }
