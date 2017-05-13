@@ -10,6 +10,35 @@ cronut
 | licence   | MIT   |
 
 
+Running
+--
+
+This tool is best run via docker, mainly for the reliance on libgit2. It may be run as per:
+
+```bash
+$ docker run -v /var/run/docker.sock:/var/run/docker.sock jspc/cronut -repo "https://github.com/org/config-repo"
+```
+
+Or
+
+```bash
+$ docker run -e DOCKER_HOST="https://example.com" jspc/cronut -repo "https://github.com/org/config-repo"
+```
+
+It requires access to the docker daemon it is going to control, naturally, and a git repo containing configuration files for the jobs it manages; files for which look like:
+
+```yaml
+---
+name: my-fantastic-container
+container: example/hello-world
+env:
+    - KEY=value
+args:
+    - "-v"
+cron: "* * * * *"
+```
+
+
 Licence
 --
 
