@@ -17,6 +17,8 @@ var (
 
 func main() {
 	flag.Parse()
+	L.Print("cronut")
+	L.Printf("Initialized with repo: %q", *GitRepo)
 
 	c := goose4.Config{
 		ArtifactID:      "cronut",
