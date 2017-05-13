@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"log"
 	"net/http"
 	"time"
 
@@ -11,6 +12,7 @@ import (
 
 var (
 	GitRepo = flag.String("repo", "", "Git repo which stores job configuration")
+	L       = log.New(os.Stdout, "", log.LstdFlags|log.Lshortfile)
 )
 
 func main() {
