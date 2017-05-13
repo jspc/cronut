@@ -4,6 +4,9 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
+	"path"
+	"strings"
 	"time"
 
 	"github.com/zeebox/go-http-middleware"
@@ -36,6 +39,29 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	go func() {
+		checkoutDir := Clone()
+		//defer os.RemoveAll(checkoutDir)
+
+		gitDir, err := os.Open(checkoutDir)
+		if err != nil {
+			panic(err)
+		}
+
+		dirContents, err := gitDir.Readdir(0)
+		if err != nil {
+			panic(err)
+		}
+
+		for _, f := range dirContents {
+			if strings.HasSuffix(f.Name(), ".conf") {
+				L.Printf("Loading: %q", f.Name())
+
+				go Cron(path.Join(checkoutDir, f.Name()))
+			}
+		}
+	}()
 
 	http.Handle("/service/", middleware.NewMiddleware(se4))
 	panic(http.ListenAndServe(":8080", nil))
