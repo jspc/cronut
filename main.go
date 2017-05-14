@@ -63,10 +63,26 @@ func main() {
 		}
 
 		for _, f := range dirContents {
+			f := f // scoping for go routine below
+
 			if strings.HasSuffix(f.Name(), ".conf") {
 				L.Printf("Loading: %q", f.Name())
 
-				go Cron(path.Join(checkoutDir, f.Name()))
+				go func() {
+
+					j, err := Parse(path.Join(checkoutDir, f.Name()))
+					if err != nil {
+						L.Printf("%s -> %v", f.Name(), err)
+						panic(err)
+					}
+
+					Pull(j.Container)
+
+					for {
+						// cron blocks until the next task has run
+						Cron(j)
+					}
+				}()
 			}
 		}
 	}()

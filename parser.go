@@ -1,6 +1,8 @@
 package main
 
 import (
+	"io/ioutil"
+
 	"gopkg.in/yaml.v2"
 )
 
@@ -18,7 +20,12 @@ type Job struct {
 	Container string
 }
 
-func Parse(f []byte) (j Job, err error) {
-	err = yaml.Unmarshal([]byte(f), &j)
+func Parse(path string) (j Job, err error) {
+	dat, err := ioutil.ReadFile(path)
+	if err != nil {
+		return
+	}
+
+	err = yaml.Unmarshal(dat, &j)
 	return
 }

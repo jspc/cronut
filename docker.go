@@ -42,3 +42,11 @@ func Start(jid string, j Job) {
 
 	L.Printf("%s -> error: %v", jid, err)
 }
+
+func Pull(container string) error {
+	L.Printf("Pulling %q", container)
+	r, err := Docker.ImagePull(context.Background(), container, types.ImagePullOptions{})
+	r.Close()
+
+	return err
+}
