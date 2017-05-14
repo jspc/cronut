@@ -4,9 +4,9 @@ build:
 	go build
 
 linux:
-	GOOS=linux go build -o cronut-linux
+	docker run -v $(PWD):/root/golang/src/github.com/jspc/cronut -v $(GOPATH)/src/github.com/zeebox:/root/golang/src/github.com/zeebox --workdir /root/golang/src/github.com/jspc/cronut jspc/alpine-build
 
- dist: linux
+dist: linux
 	docker build -t jspc/cronut .
 
 push: dist

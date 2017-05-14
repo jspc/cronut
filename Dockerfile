@@ -5,6 +5,6 @@ RUN apk add --update ca-certificates \
                      libgit2 \
                      libgit2-dev
 
-ADD cronut-linux /cronut
+ADD cronut /cronut
 
 ENTRYPOINT ["/cronut"]
